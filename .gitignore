@@ -1,0 +1,34 @@
+# Flutter (client) ignores
+client/.dart_tool/
+client/.flutter-plugins
+client/.flutter-plugins-dependencies
+client/.idea/
+client/build/
+client/.packages
+client/.pub-cache/
+client/.pub/
+client/ios/Flutter/App.framework
+client/ios/Flutter/Flutter.framework
+client/ios/Flutter/Flutter.podspec
+client/ios/Flutter/Generated.xcconfig
+client/ios/Flutter/app.flx
+client/ios/Flutter/app.zip
+client/ios/Flutter/flutter_assets/
+client/ios/Flutter/flutter_export_environment.sh
+client/ios/Runner/GeneratedPluginRegistrant.*
+client/android/.gradle/
+client/android/build/
+client/android/app/build/
+client/android/app/release/
+client/android/app/debug/
+client/android/app/profile/
+
+# Node.js (server) ignores
+server/node_modules/
+server/app.db
+server/uploads/
+
+# General ignores
+*.log
+.DS_Store
+.env

@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_provider.dart';
 import '../widgets/custom_button.dart';
+import 'profile_setup_screen.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -42,7 +46,12 @@ class _LoginScreenState extends State<LoginScreen> {
       }
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (_) => HomeScreen()),
+        MaterialPageRoute(
+          builder: (_) => ProfileSetupScreen(
+            name: authProvider.user!.name,
+            token: authProvider.token!,
+          ),
+        ),
       );
     } catch (e) {
       setState(() {
@@ -61,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -70,15 +79,15 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 if (_errorMessage != null)
                   Padding(
-                    padding: EdgeInsets.only(bottom: 16.0),
+                    padding: const EdgeInsets.only(bottom: 16.0),
                     child: Text(
                       _errorMessage!,
-                      style: TextStyle(color: Colors.red),
+                      style: const TextStyle(color: Colors.red),
                     ),
                   ),
                 if (!_isLogin)
                   TextFormField(
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Name',
                       border: OutlineInputBorder(),
                     ),
@@ -90,9 +99,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     onSaved: (value) => _name = value!,
                   ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(),
                   ),
@@ -108,9 +117,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   onSaved: (value) => _email = value!,
                 ),
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
                 TextFormField(
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(),
                   ),
@@ -126,21 +135,21 @@ class _LoginScreenState extends State<LoginScreen> {
                   },
                   onSaved: (value) => _password = value!,
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 _isLoading
-                    ? CircularProgressIndicator()
+                    ? const CircularProgressIndicator()
                     : CustomButton(
                         text: _isLogin ? 'Login' : 'Sign Up',
                         onPressed: _submit,
                       ),
-                SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 TextButton(
                   onPressed: _toggleMode,
                   child: Text(
                     _isLogin
                         ? 'Don\'t have an account? Sign Up'
                         : 'Already have an account? Login',
-                    style: TextStyle(color: Colors.pink),
+                    style: const TextStyle(color: Colors.pink),
                   ),
                 ),
               ],
@@ -148,16 +157,6 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Home')),
-      body: Center(child: Text('Welcome to the Dating App!')),
     );
   }
 }

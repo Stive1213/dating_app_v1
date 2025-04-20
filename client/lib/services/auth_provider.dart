@@ -21,12 +21,13 @@ class User {
 class AuthProvider with ChangeNotifier {
   User? _user;
   String? _token;
+  final ApiService _apiService = ApiService(); // Add instance of ApiService
 
   User? get user => _user;
   String? get token => _token;
 
   Future<void> signup(String email, String password, String name) async {
-    final response = await ApiService().signup(email, password, name);
+    final response = await _apiService.signup(email, password, name);
     _user = User.fromJson(response['user']);
     _token = response['token'];
     final prefs = await SharedPreferences.getInstance();
@@ -36,13 +37,20 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> login(String email, String password) async {
-    final response = await ApiService().login(email, password);
+    final response = await _apiService.login(email, password);
     _user = User.fromJson(response['user']);
     _token = response['token'];
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('token', _token!);
     await prefs.setString('userId', _user!.id.toString());
     notifyListeners();
+  }
+
+  Future<bool> checkProfileExists() async {
+    if (_token == null) {
+      throw Exception('No token available');
+    }
+    return await _apiService.checkProfileExists(_token!);
   }
 
   Future<void> logout() async {

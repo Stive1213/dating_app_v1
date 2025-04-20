@@ -41,18 +41,39 @@ class _LoginScreenState extends State<LoginScreen> {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
       if (_isLogin) {
         await authProvider.login(_email, _password);
+        // Check if the user has a profile
+        final hasProfile = await authProvider.checkProfileExists();
+        if (hasProfile) {
+          // Redirect to HomeScreen if profile exists
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const HomeScreen()),
+          );
+        } else {
+          // Redirect to ProfileSetupScreen if no profile
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (_) => ProfileSetupScreen(
+                name: authProvider.user!.name,
+                token: authProvider.token!,
+              ),
+            ),
+          );
+        }
       } else {
         await authProvider.signup(_email, _password, _name);
-      }
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (_) => ProfileSetupScreen(
-            name: authProvider.user!.name,
-            token: authProvider.token!,
+        // Always redirect to ProfileSetupScreen after signup
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (_) => ProfileSetupScreen(
+              name: authProvider.user!.name,
+              token: authProvider.token!,
+            ),
           ),
-        ),
-      );
+        );
+      }
     } catch (e) {
       setState(() {
         _errorMessage = e.toString().replaceFirst('Exception: ', '');

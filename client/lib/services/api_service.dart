@@ -54,6 +54,22 @@ class ApiService {
     }
   }
 
+  Future<bool> checkProfileExists(String token) async {
+    final response = await http.get(
+      Uri.parse('$baseUrl/profile/exists'), // No trailing /
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['hasProfile'] ?? false;
+    } else {
+      throw Exception(jsonDecode(response.body)['error'] ?? 'Failed to check profile');
+    }
+  }
+
   Future<Map<String, dynamic>> saveProfile({
     required String token,
     required String name,
